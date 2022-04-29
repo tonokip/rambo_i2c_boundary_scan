@@ -7,7 +7,7 @@ uint8_t    dbmp[] = {  1,  2,  3,  4,  5,  6,  7 , 8,  9, 10, 11, 12, 13, 14, 15
 uint8_t rj_out_J1[] = { 4, 3, 2,  1,  0, 14, 15, 16 };
 //uint8_t rj_out_J1[] = { 4,   3,  2, 17, 18, 14, 15, 16 };
 uint8_t rj_out_J2[] = { 12, 11, 10,  9,  8,  7,  6,  5 };
-uint8_t  db_in_J3[] = { 52, 65, 48, 67, 67, 46, 66, 50 };
+uint8_t  db_in_J3[] = { 50, 66, 46, 67, 67, 48, 69, 52 };
 uint8_t  db_in_J4[] = { 27, 33, 23, 31, 31, 19, 32, 25 };
 
 int8_t test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8_t db_in[], uint8_t rjCount);
