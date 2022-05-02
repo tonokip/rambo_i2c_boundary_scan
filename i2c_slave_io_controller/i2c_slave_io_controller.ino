@@ -4,7 +4,7 @@
 #define DEBUG_PRINTLN(x)
 
 void setup() {
-  Wire.begin(13);                // join i2c bus with address #8
+  Wire.begin(1);                // join i2c bus with address #8
   Wire.onReceive(receiveEvent); // register event
   Wire.onRequest(requestEvent); // register event
   Serial.end();
