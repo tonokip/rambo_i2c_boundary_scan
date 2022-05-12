@@ -67,7 +67,7 @@ void receiveEvent(int howMany) {
       digitalWrite(buf[i], LOW);
       for(int j=1; j < dataSize ; j++)
       {
-        if(j != i && digitalRead(buf[j]) == LOW)
+        if(j != i && (buf[i] != 6 && buf[j] != 8) && (buf[i] != 8 && buf[j] != 6) && digitalRead(buf[j]) == LOW)
         {
           values[j-1]++;
           /*
