@@ -54,8 +54,6 @@ uint8_t        db_in_J4[] = { 27, 29, 33, 23, 31, 31, 19, 32, 25 }; // DTE Ardui
 
 // 32x DCE and 8x DTE
 
-int test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8_t db_in[], uint8_t rjCount);
-
 #define LED_PIN 13
 
 #define START_PIN 12
@@ -146,8 +144,8 @@ void loop() {
         if(isDigit(Serial.peek())){
           uint8_t addr = Serial.parseInt();
           Serial.println(J1J3_test(addr));
-          Serial.println(J1J3_test_no6(addr));
-          Serial.println(J1J3_test_no8(addr));
+          //Serial.println(J1J3_test_no6(addr));
+          //Serial.println(J1J3_test_no8(addr));
           pin = -1;
         }
         finished();
@@ -158,8 +156,8 @@ void loop() {
         if(isDigit(Serial.peek())){
           uint8_t addr = Serial.parseInt();
           Serial.println(J2J4_test(addr));
-          Serial.println(J2J4_test_no6(addr));
-          Serial.println(J2J4_test_no8(addr));
+          //Serial.println(J2J4_test_no6(addr));
+          //Serial.println(J2J4_test_no8(addr));
           pin = -1;
         }
         finished();
@@ -241,12 +239,12 @@ int full_rack_test()
   
   for(int addr = 1; addr <= 16; addr++)
   {
-    //retval += J1J3_test(addr);
-    //retval += J2J4_test(addr);
-    retval += J1J3_test_no6(addr);
-    retval += J1J3_test_no8(addr);
-    retval += J2J4_test_no6(addr);
-    retval += J2J4_test_no8(addr);
+    retval += J1J3_test(addr);
+    retval += J2J4_test(addr);
+    //retval += J1J3_test_no6(addr);
+    //retval += J1J3_test_no8(addr);
+    //retval += J2J4_test_no6(addr);
+    //retval += J2J4_test_no8(addr);
   }
 
   return retval;
@@ -286,21 +284,22 @@ uint8_t read_i2c_pin(uint8_t addr, uint8_t pin)
   return -1;
 }
 
-int8_t J1J3_test(uint8_t addr)
+int J1J3_test(uint8_t addr)
 {
-  int8_t retval;
+  int retval = 0;
   uint32_t start_time = millis();
   UNUSED(start_time);
   DEBUG_PRINT("\nJ1J3 test address: ");
   DEBUG_PRINT(addr);
   DEBUG_PRINT(" cable: ");
   DEBUG_PRINT((addr - 1) * 2);
-  retval = test(addr, pins_J3, sizeof(pins_J3), rj_out_J1, db_in_J3, sizeof(rj_out_J1) );
+  retval += test(addr, pins_J3_no6, sizeof(pins_J3_no6), pins_J3, sizeof(pins_J3), rj_out_J1, db_in_J3, sizeof(rj_out_J1) );
+  retval += test(addr, pins_J3_no8, sizeof(pins_J3_no8), pins_J3, sizeof(pins_J3), rj_out_J1, db_in_J3, sizeof(rj_out_J1) );
   //DEBUG_PRINT("Test1 Time: ");
   //DEBUG_PRINTLN(millis() - start_time);
   return retval;
 }
-
+/*
 int8_t J1J3_test_no6(uint8_t addr)
 {
   int8_t retval;
@@ -330,22 +329,24 @@ int8_t J1J3_test_no8(uint8_t addr)
   //DEBUG_PRINTLN(millis() - start_time);
   return retval;
 }
-
-int8_t J2J4_test(uint8_t addr)
+*/
+int J2J4_test(uint8_t addr)
 {
-  int8_t retval;
+  int retval = 0;
   uint32_t start_time = millis();
   UNUSED(start_time);
   DEBUG_PRINT("\nJ2J4 test address: ");
   DEBUG_PRINT(addr);
   DEBUG_PRINT(" cable: ");
   DEBUG_PRINT((addr - 1) * 2 + 1);
-  retval = test(addr, pins_J4, sizeof(pins_J4), rj_out_J2, db_in_J4, sizeof(rj_out_J2) );
+  //retval = test(addr, pins_J4, sizeof(pins_J4), rj_out_J2, db_in_J4, sizeof(rj_out_J2) );
+  retval += test(addr, pins_J4_no6, sizeof(pins_J4_no6), pins_J4, sizeof(pins_J4), rj_out_J2, db_in_J4, sizeof(rj_out_J2) );
+  retval += test(addr, pins_J4_no8, sizeof(pins_J4_no8), pins_J4, sizeof(pins_J4), rj_out_J2, db_in_J4, sizeof(rj_out_J2) );
   //DEBUG_PRINT("Test1 Time: ");
   //DEBUG_PRINTLN(millis() - start_time);
   return retval;
 }
-
+/*
 int8_t J2J4_test_no6(uint8_t addr)
 {
   int8_t retval;
@@ -375,8 +376,8 @@ int8_t J2J4_test_no8(uint8_t addr)
   //DEBUG_PRINTLN(millis() - start_time);
   return retval;
 }
-
-int test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8_t db_in[], uint8_t rjCount) {
+*/
+int test(uint8_t addr, uint8_t bt_pins[], uint8_t bt_pinCount, uint8_t db_pins[], uint8_t db_pinCount, uint8_t rj_out[], uint8_t db_in[], uint8_t rjCount) {
   //Serial.println("start test");
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
@@ -385,14 +386,14 @@ int test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8
   // Read pins using internal pullups
   Wire.beginTransmission(addr);
   Wire.write('Q'); // INPUT_PULLUP
-  Wire.write(pins, pinCount);
+  Wire.write(db_pins, db_pinCount);
   Wire.endTransmission();
 
-  Wire.requestFrom(addr, pinCount);    // request 25 bytes from device
+  Wire.requestFrom(addr, db_pinCount);    // request 25 bytes from device
 
   // Short to GND Test
   Serial.print(" S:");
-  for(int i = 0; i < pinCount; i++)
+  for(int i = 0; i < db_pinCount; i++)
   {
     if( ! Wire.available() ) {
       Serial.print("?");
@@ -409,12 +410,12 @@ int test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8
   // Bridged pins Test
   Wire.beginTransmission(addr);
   Wire.write('B');
-  Wire.write(pins, pinCount);
+  Wire.write(bt_pins, bt_pinCount);
   Wire.endTransmission();
 
-  Wire.requestFrom(addr, pinCount);
+  Wire.requestFrom(addr, bt_pinCount);
   Serial.print(" B:");
-  for(int i = 0; i < pinCount; i++)
+  for(int i = 0; i < bt_pinCount; i++)
   {
     if( ! Wire.available() ) {
       Serial.print("?");
