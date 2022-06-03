@@ -1,5 +1,6 @@
 #include <Wire.h>
 
+#define UNUSED(x) (void)(x)
 
 
 // uint8_t dce_rjmp[] = {  1,  2,  3,  4,  5,  6,  7,  7,  8 }; // RJ45 pin numbers with duplicate pins for DCE
@@ -53,7 +54,7 @@ uint8_t        db_in_J4[] = { 27, 29, 33, 23, 31, 31, 19, 32, 25 }; // DTE Ardui
 
 // 32x DCE and 8x DTE
 
-int8_t test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8_t db_in[], uint8_t rjCount);
+int test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8_t db_in[], uint8_t rjCount);
 
 #define LED_PIN 13
 
@@ -119,6 +120,8 @@ void loop() {
       Serial.println("J<addr> (J1J3 test for one i2c address)");
       Serial.println("K<addr> (J2J4 test for one i2c address)");
       Serial.println("F (Run full test)\n");
+      finished();
+      break;
      }
       //Read Pin but turn pullups on
       //Format: Q<pin>
@@ -165,6 +168,8 @@ void loop() {
     case 'F' : 
       {
         run_full_rack_test();
+        finished();
+        break;
       }
     default:
       {
@@ -251,14 +256,14 @@ uint8_t i2c_pin_low(uint8_t addr, uint8_t pin) {
   Wire.beginTransmission(addr);
   Wire.write('L');
   Wire.write(pin);
-  Wire.endTransmission();
+  return Wire.endTransmission();
 }
 
 uint8_t i2c_pin_high(uint8_t addr, uint8_t pin) {
   Wire.beginTransmission(addr);
   Wire.write('H');
   Wire.write(pin);
-  Wire.endTransmission();
+  return Wire.endTransmission();
 }
 
 uint8_t read_i2c_pin(uint8_t addr, uint8_t pin)
@@ -285,6 +290,7 @@ int8_t J1J3_test(uint8_t addr)
 {
   int8_t retval;
   uint32_t start_time = millis();
+  UNUSED(start_time);
   DEBUG_PRINT("\nJ1J3 test address: ");
   DEBUG_PRINT(addr);
   DEBUG_PRINT(" cable: ");
@@ -299,6 +305,7 @@ int8_t J1J3_test_no6(uint8_t addr)
 {
   int8_t retval;
   uint32_t start_time = millis();
+  UNUSED(start_time);
   DEBUG_PRINT("\nJ1J3 test address: ");
   DEBUG_PRINT(addr);
   DEBUG_PRINT(" cable: ");
@@ -313,6 +320,7 @@ int8_t J1J3_test_no8(uint8_t addr)
 {
   int8_t retval;
   uint32_t start_time = millis();
+  UNUSED(start_time);
   DEBUG_PRINT("\nJ1J3 test address: ");
   DEBUG_PRINT(addr);
   DEBUG_PRINT(" cable: ");
@@ -327,6 +335,7 @@ int8_t J2J4_test(uint8_t addr)
 {
   int8_t retval;
   uint32_t start_time = millis();
+  UNUSED(start_time);
   DEBUG_PRINT("\nJ2J4 test address: ");
   DEBUG_PRINT(addr);
   DEBUG_PRINT(" cable: ");
@@ -341,6 +350,7 @@ int8_t J2J4_test_no6(uint8_t addr)
 {
   int8_t retval;
   uint32_t start_time = millis();
+  UNUSED(start_time);
   DEBUG_PRINT("\nJ2J4 test address: ");
   DEBUG_PRINT(addr);
   DEBUG_PRINT(" cable: ");
@@ -355,6 +365,7 @@ int8_t J2J4_test_no8(uint8_t addr)
 {
   int8_t retval;
   uint32_t start_time = millis();
+  UNUSED(start_time);
   DEBUG_PRINT("\nJ2J4 test address: ");
   DEBUG_PRINT(addr);
   DEBUG_PRINT(" cable: ");
@@ -365,11 +376,11 @@ int8_t J2J4_test_no8(uint8_t addr)
   return retval;
 }
 
-int8_t test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8_t db_in[], uint8_t rjCount) {
+int test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8_t db_in[], uint8_t rjCount) {
   //Serial.println("start test");
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
-  uint8_t test_pass=0;
+  int test_pass=0;
 
   // Read pins using internal pullups
   Wire.beginTransmission(addr);
