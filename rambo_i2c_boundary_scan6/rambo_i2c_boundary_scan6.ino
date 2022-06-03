@@ -1,14 +1,57 @@
 #include <Wire.h>
 
-uint8_t pins_J3[] = { 44, 46, 48, 50, 52, 69, 67, 65, 63, 61, 59, 57, 55, 45, 47, 49, 51, 53, 68, 66, 64, 62, 60, 58, 56 };
-uint8_t pins_J4[] = { 17, 19, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 18, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42 };
+
+
+// uint8_t dce_rjmp[] = {  1,  2,  3,  4,  5,  6,  7,  7,  8 }; // RJ45 pin numbers with duplicate pins for DCE
+//uint8_t    dce_in[] = {  4,  20, 2,  7,  7,  3,  6,  8,  5 }; // DCE RJ45 to DB25 pins
+//uint8_t    dte_in[] = {  5,  6,  8,  2,  7,  7,  2, 20,  4 }; // DTE R45 to DB25 pins
+// uint8_t dte_rjmp[] = {  1,  2,  2,  3,  4,  5,  6,  7,  8 }; // RJ45 pin numbers with duplicate pins for DTE
+
+// CHANNEL 1
+// uint8_t dce_rjmp[] = {  1,  2,  3,  4,  5,  6,  7,  7,  8 }; // RJ45 pin numbers with duplicate pins for DCE
+uint8_t   rj_out_J1[] = {  4,  3,  2,  1,  0, 14, 15, 15, 16 }; // Arduino Pin Numbers. DCE - Output low RJ45 pin is connected to 2 DB25 pins with duplicates we can test it twice for each of the corresponding DB25 pins
+
+uint8_t      dce_in[] = {  4,  20, 2,  7,  7,  3,  6,  8,  5 }; // DCE RJ45 to DB25 pins
+
+//uint8_t      dbmp[] = {  1,  2,  3,  4,  5,  6,  7 , 8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
+uint8_t     pins_J3[] = { 44, 46, 48, 50, 52, 69, 67, 65, 63, 61, 59, 57, 55, 45, 47, 49, 51, 53, 68, 66, 64, 62, 60, 58, 56 };
+uint8_t pins_J3_no6[] = { 44, 46, 48, 50, 52,     67, 65, 63, 61, 59, 57, 55, 45, 47, 49, 51, 53, 68, 66, 64, 62, 60, 58, 56 };
+uint8_t pins_J3_no8[] = { 44, 46, 48, 50, 52, 69, 67,     63, 61, 59, 57, 55, 45, 47, 49, 51, 53, 68, 66, 64, 62, 60, 58, 56 };
+
+uint8_t    db_in_J3[] = { 50, 66, 46, 67, 67, 48, 69, 65, 52 };
+
+// CHANNEL 2
+
+//     uint8_t dte_rjmp[] = {  1,  2,  2,  3,  4,  5,  6,  7,  8 };
+uint8_t       rj_out_J2[] = { 12, 11, 11, 10,  9,  8,  7,  6,  5 }; // Arduino Pin Numbers. DTE - Output low RJ45 pin is connected to 2 DB25 pins with duplicates we can test it twice for each of the corresponding DB25 pins
+//uint8_t rj_out_J2_old[] = { 12,     11, 10,  9,  8,  7,  6,  5 };
+
+
+uint8_t          dte_in[] = {  5,  6,  8,  2,  7,  7,  2, 20,  4 }; // DTE R45 to DB25 pins
+
+//uint8_t      dbmp[] = {  1,  2,  3,  4,  5,  6,  7 , 8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
+uint8_t     pins_J4[] = { 17, 19, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 18, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42 };
+uint8_t pins_J4_no6[] = { 17, 19, 23, 25, 27,     31, 33, 35, 37, 39, 41, 43, 18, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42 };
+uint8_t pins_J4_no8[] = { 17, 19, 23, 25, 27, 29, 31,     35, 37, 39, 41, 43, 18, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42 };
 //uint8_t pins_J4[] = { 44, 19, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42 };
-uint8_t    dbmp[] = {  1,  2,  3,  4,  5,  6,  7 , 8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
-uint8_t rj_out_J1[] = { 4, 3, 2,  1,  0, 14, 15, 15, 16 };
-//uint8_t rj_out_J1[] = { 4,   3,  2, 17, 18, 14, 15, 16 };
-uint8_t rj_out_J2[] = { 12, 11, 11, 10,  9,  8,  7,  6,  5 };
-uint8_t  db_in_J3[] = { 50, 66, 46, 67, 67, 48, 69, 65, 52 };
-uint8_t  db_in_J4[] = { 27, 29, 33, 23, 31, 31, 19, 32, 25 };
+
+uint8_t        db_in_J4[] = { 27, 29, 33, 23, 31, 31, 19, 32, 25 }; // DTE Arduino Pin Numbers
+//uint8_t  db_in_J4_old[] = { 27,     33, 23, 31, 31, 19, 32, 25 };
+//             db_in_J4[] = { pins_J4[dte_in[0]], pins_J4[dte_in[1]], ... }
+
+// NEW DCE
+// RJ45-2 to DB25-20
+// RJ45-7 to DB25-8 and DB-6
+
+// NEW DTE
+// RJ45-2 to DB25-8 and DB-6
+// RJ45-7 to DB25-20
+
+// OLD DTE
+// RJ45-2 to DB25-8
+// RJ45-7 to DB25-20
+
+// 32x DCE and 8x DTE
 
 int8_t test(uint8_t addr, uint8_t pins[], uint8_t pinCount, uint8_t rj_out[], uint8_t db_in[], uint8_t rjCount);
 
@@ -100,6 +143,8 @@ void loop() {
         if(isDigit(Serial.peek())){
           uint8_t addr = Serial.parseInt();
           Serial.println(J1J3_test(addr));
+          Serial.println(J1J3_test_no6(addr));
+          Serial.println(J1J3_test_no8(addr));
           pin = -1;
         }
         finished();
@@ -110,6 +155,8 @@ void loop() {
         if(isDigit(Serial.peek())){
           uint8_t addr = Serial.parseInt();
           Serial.println(J2J4_test(addr));
+          Serial.println(J2J4_test_no6(addr));
+          Serial.println(J2J4_test_no8(addr));
           pin = -1;
         }
         finished();
@@ -189,8 +236,12 @@ int full_rack_test()
   
   for(int addr = 1; addr <= 16; addr++)
   {
-    retval += J1J3_test(addr);
-    retval += J2J4_test(addr);
+    //retval += J1J3_test(addr);
+    //retval += J2J4_test(addr);
+    retval += J1J3_test_no6(addr);
+    retval += J1J3_test_no8(addr);
+    retval += J2J4_test_no6(addr);
+    retval += J2J4_test_no8(addr);
   }
 
   return retval;
@@ -244,6 +295,34 @@ int8_t J1J3_test(uint8_t addr)
   return retval;
 }
 
+int8_t J1J3_test_no6(uint8_t addr)
+{
+  int8_t retval;
+  uint32_t start_time = millis();
+  DEBUG_PRINT("\nJ1J3 test address: ");
+  DEBUG_PRINT(addr);
+  DEBUG_PRINT(" cable: ");
+  DEBUG_PRINT((addr - 1) * 2);
+  retval = test(addr, pins_J3_no6, sizeof(pins_J3_no6), rj_out_J1, db_in_J3, sizeof(rj_out_J1) );
+  //DEBUG_PRINT("Test1 Time: ");
+  //DEBUG_PRINTLN(millis() - start_time);
+  return retval;
+}
+
+int8_t J1J3_test_no8(uint8_t addr)
+{
+  int8_t retval;
+  uint32_t start_time = millis();
+  DEBUG_PRINT("\nJ1J3 test address: ");
+  DEBUG_PRINT(addr);
+  DEBUG_PRINT(" cable: ");
+  DEBUG_PRINT((addr - 1) * 2);
+  retval = test(addr, pins_J3_no8, sizeof(pins_J3_no8), rj_out_J1, db_in_J3, sizeof(rj_out_J1) );
+  //DEBUG_PRINT("Test1 Time: ");
+  //DEBUG_PRINTLN(millis() - start_time);
+  return retval;
+}
+
 int8_t J2J4_test(uint8_t addr)
 {
   int8_t retval;
@@ -253,6 +332,34 @@ int8_t J2J4_test(uint8_t addr)
   DEBUG_PRINT(" cable: ");
   DEBUG_PRINT((addr - 1) * 2 + 1);
   retval = test(addr, pins_J4, sizeof(pins_J4), rj_out_J2, db_in_J4, sizeof(rj_out_J2) );
+  //DEBUG_PRINT("Test1 Time: ");
+  //DEBUG_PRINTLN(millis() - start_time);
+  return retval;
+}
+
+int8_t J2J4_test_no6(uint8_t addr)
+{
+  int8_t retval;
+  uint32_t start_time = millis();
+  DEBUG_PRINT("\nJ2J4 test address: ");
+  DEBUG_PRINT(addr);
+  DEBUG_PRINT(" cable: ");
+  DEBUG_PRINT((addr - 1) * 2 + 1);
+  retval = test(addr, pins_J4_no6, sizeof(pins_J4_no6), rj_out_J2, db_in_J4, sizeof(rj_out_J2) );
+  //DEBUG_PRINT("Test1 Time: ");
+  //DEBUG_PRINTLN(millis() - start_time);
+  return retval;
+}
+
+int8_t J2J4_test_no8(uint8_t addr)
+{
+  int8_t retval;
+  uint32_t start_time = millis();
+  DEBUG_PRINT("\nJ2J4 test address: ");
+  DEBUG_PRINT(addr);
+  DEBUG_PRINT(" cable: ");
+  DEBUG_PRINT((addr - 1) * 2 + 1);
+  retval = test(addr, pins_J4_no8, sizeof(pins_J4_no8), rj_out_J2, db_in_J4, sizeof(rj_out_J2) );
   //DEBUG_PRINT("Test1 Time: ");
   //DEBUG_PRINTLN(millis() - start_time);
   return retval;
