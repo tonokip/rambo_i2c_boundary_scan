@@ -10,7 +10,11 @@
 
 // CHANNEL 1
 // uint8_t dce_rjmp[] = {  1,  2,  3,  4,  5,  6,  7,  7,  8 }; // RJ45 pin numbers with duplicate pins for DCE
-uint8_t   rj_out_J1[] = {  4,  3,  2,  1,  0, 14, 15, 15, 16 }; // Arduino Pin Numbers. DCE - Output low RJ45 pin is connected to 2 DB25 pins with duplicates we can test it twice for each of the corresponding DB25 pins
+
+uint8_t     rj_out_J1[] = {  4,      3,  2,  1,  0, 14, 15, 15, 16 }; // Default DCE
+uint8_t rj_out_dce_J1[] = {  4,      3,  2,  1,  0, 14, 15, 15, 16 }; // Arduino Pin Numbers. DCE - Output low RJ45 pin is connected to 2 DB25 pins with duplicates we can test it twice for each of the corresponding DB25 pins
+uint8_t rj_out_dte_J1[] = {  4,  3,  3,  2,  1,  0, 14, 15,     16 }; // DTE
+
 
 uint8_t      dce_in[] = {  4,  20, 2,  7,  7,  3,  6,  8,  5 }; // DCE RJ45 to DB25 pins
 
@@ -19,16 +23,20 @@ uint8_t     pins_J3[] = { 44, 46, 48, 50, 52, 69, 67, 65, 63, 61, 59, 57, 55, 45
 uint8_t pins_J3_no6[] = { 44, 46, 48, 50, 52,     67, 65, 63, 61, 59, 57, 55, 45, 47, 49, 51, 53, 68, 66, 64, 62, 60, 58, 56 };
 uint8_t pins_J3_no8[] = { 44, 46, 48, 50, 52, 69, 67,     63, 61, 59, 57, 55, 45, 47, 49, 51, 53, 68, 66, 64, 62, 60, 58, 56 };
 
-uint8_t    db_in_J3[] = { 50, 66, 46, 67, 67, 48, 69, 65, 52 };
-
+//        DCE RJ45 pins:   1,      2,  3,  4,  5,  6,  7,  7,  8  // Then look up in dce_in[]
+//uint8_t  db_in_J3[] = { 50,     66, 46, 67, 67, 48, 69, 65, 52 }; // Working DCE Arduino Pin Numbers
+uint8_t    db_in_J3[] = { 52, 69, 65, 48, 67, 67, 46,     66, 50 }; // WIP DTE
+//        DTE RJ45 pins:   1,  2,  2,  3,  4,  5,  6,  7,      8  // Then look up in dte_in[]
+// uint8_t    db_in_J3[] = { 52, 69, 65, 48, 67, 48, 69, 65,     52 }; // Not Working DTE
 // CHANNEL 2
 
-//     uint8_t dte_rjmp[] = {  1,  2,  2,  3,  4,  5,  6,  7,  8 };
-uint8_t       rj_out_J2[] = { 12, 11, 11, 10,  9,  8,  7,  6,  5 }; // Arduino Pin Numbers. DTE - Output low RJ45 pin is connected to 2 DB25 pins with duplicates we can test it twice for each of the corresponding DB25 pins
-//uint8_t rj_out_J2_old[] = { 12,     11, 10,  9,  8,  7,  6,  5 };
+       uint8_t dte_rjmp[] = {  1,  2,  2,  3,  4,  5,  6,  7,  8 };
+      uint8_t rj_out_J2[] = { 12, 11, 10,  9,  8,  7,  6,  6,  5 }; // Default DCE
+  uint8_t rj_out_dce_J2[] = { 12, 11, 10,  9,  8,  7,  6,  6,  5 }; // DCE
+  uint8_t rj_out_dte_J2[] = { 12, 11, 11, 10,  9,  8,  7,  6,  5 }; // Arduino Pin Numbers. DTE - Output low RJ45 pin is connected to 2 DB25 pins with duplicates we can test it twice for each of the corresponding DB25 pins
 
 
-uint8_t          dte_in[] = {  5,  6,  8,  2,  7,  7,  2, 20,  4 }; // DTE R45 to DB25 pins
+uint8_t          dte_in[] = {  5,  6,  8,  3,  7,  7,  2, 20,  4 }; // DTE R45 to DB25 pins
 
 //uint8_t      dbmp[] = {  1,  2,  3,  4,  5,  6,  7 , 8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
 uint8_t     pins_J4[] = { 17, 19, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 18, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42 };
@@ -36,8 +44,9 @@ uint8_t pins_J4_no6[] = { 17, 19, 23, 25, 27,     31, 33, 35, 37, 39, 41, 43, 18
 uint8_t pins_J4_no8[] = { 17, 19, 23, 25, 27, 29, 31,     35, 37, 39, 41, 43, 18, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42 };
 //uint8_t pins_J4[] = { 44, 19, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42 };
 
-uint8_t        db_in_J4[] = { 27, 29, 33, 23, 31, 31, 19, 32, 25 }; // DTE Arduino Pin Numbers
-//uint8_t  db_in_J4_old[] = { 27,     33, 23, 31, 31, 19, 32, 25 };
+  uint8_t        db_in_J4[] = { 27, 29, 33, 23, 31, 31, 19, 32,     25 }; // Working DTE Arduino Pin Numbers
+//uint8_t        db_in_J4[] = { 25,     32, 19, 31, 31, 23, 33, 29, 27 }; // Working DCE Arduino Pin Numbers (pin2pin2 swapped places with pin7)
+//uint8_t    db_in_J4_old[] = { 27,     33, 23, 31, 31, 19, 32, 25 };
 //             db_in_J4[] = { pins_J4[dte_in[0]], pins_J4[dte_in[1]], ... }
 
 // NEW DCE
@@ -82,6 +91,42 @@ void setup() {
   pinMode(LED_PIN,OUTPUT);
 }
 
+void set_dte() {
+  for(uint8_t i = 0; i < sizeof(db_in_J4); i++) {
+    db_in_J4[i] = pins_J4[dte_in[i]-1];
+  }
+
+  for(uint8_t i = 0; i < sizeof(db_in_J3); i++) {
+    db_in_J3[i] = pins_J3[dte_in[i]-1];
+  }
+
+  for(uint8_t i = 0; i < sizeof(rj_out_J1); i++) {
+    rj_out_J1[i] = rj_out_dte_J1[i];
+  }
+
+  for(uint8_t i = 0; i < sizeof(rj_out_J2); i++) {
+    rj_out_J2[i] = rj_out_dte_J2[i];
+  }
+}
+
+void set_dce() {
+  for(uint8_t i = 0; i < sizeof(db_in_J4); i++) {
+    db_in_J4[i] = pins_J4[dce_in[i]-1];
+  }
+
+  for(uint8_t i = 0; i < sizeof(db_in_J3); i++) {
+    db_in_J3[i] = pins_J3[dce_in[i]-1];
+  }
+
+  for(uint8_t i = 0; i < sizeof(rj_out_J1); i++) {
+    rj_out_J1[i] = rj_out_dce_J1[i];
+  }
+
+  for(uint8_t i = 0; i < sizeof(rj_out_J2); i++) {
+    rj_out_J2[i] = rj_out_dce_J2[i];
+  }
+}
+
 #define DEVICE_1_ADDR 0
 
 
@@ -121,6 +166,46 @@ void loop() {
       finished();
       break;
      }
+    case '\n' : break;
+    case '\r' : break;
+    case 't' : 
+      {
+        Serial.print("DTE DB25 J3 pins: ");
+        for(uint8_t i = 0; i < sizeof(db_in_J3); i++) {
+          Serial.print(" ");
+          Serial.print(db_in_J3[i]);
+        }
+        Serial.println();
+        Serial.println("Set DTE.");
+        Serial.print("DTE DB25 J4 pins: ");
+        for(uint8_t i = 0; i < sizeof(db_in_J4); i++) {
+          Serial.print(" ");
+          Serial.print(db_in_J4[i]);
+        }
+        Serial.println();
+        set_dte();
+        finished();
+        break; 
+      }
+    case 'c' : 
+      {
+        Serial.print("DTE DB25 J3 pins: ");
+        for(uint8_t i = 0; i < sizeof(db_in_J3); i++) {
+          Serial.print(" ");
+          Serial.print(db_in_J3[i]);
+        }
+        Serial.println();
+        Serial.print("DTE DB25 J4 pins: ");
+        for(uint8_t i = 0; i < sizeof(db_in_J4); i++) {
+          Serial.print(" ");
+          Serial.print(db_in_J4[i]);
+        }
+        Serial.println();
+        Serial.println("Set DCE.");
+        set_dce();
+        finished();
+        break; 
+      }
       //Read Pin but turn pullups on
       //Format: Q<pin>
       //Returns: <pin val>\n
@@ -200,7 +285,7 @@ void i2c_scan()
   Serial.println("Scanning...");
 
   nDevices = 0;
-  for (address = 1; address <= 16; address++ )
+  for (address = 1; address <= 20; address++ )
   {
     // The i2c_scanner uses the return value of
     // the Write.endTransmisstion to see if
@@ -230,13 +315,14 @@ void i2c_scan()
   else
     Serial.println("done\n");
 
-  delay(5000); // wait 5 seconds for the next I2C scan
+  delay(2000); // wait for the next I2C scan
 }
 
 int full_rack_test()
 {
   int retval = 0;
-  
+
+  set_dce();
   for(int addr = 1; addr <= 16; addr++)
   {
     retval += J1J3_test(addr);
@@ -245,6 +331,13 @@ int full_rack_test()
     //retval += J1J3_test_no8(addr);
     //retval += J2J4_test_no6(addr);
     //retval += J2J4_test_no8(addr);
+  }
+
+  set_dte();
+  for(int addr = 17; addr <= 20; addr++)
+  {
+    retval += J1J3_test(addr);
+    retval += J2J4_test(addr);
   }
 
   return retval;
@@ -417,6 +510,7 @@ int test(uint8_t addr, uint8_t bt_pins[], uint8_t bt_pinCount, uint8_t db_pins[]
   Serial.print(" B:");
   for(int i = 0; i < bt_pinCount; i++)
   {
+    if(i) Serial.print(',');
     if( ! Wire.available() ) {
       Serial.print("?");
       test_pass++;
@@ -450,6 +544,9 @@ int test(uint8_t addr, uint8_t bt_pins[], uint8_t bt_pinCount, uint8_t db_pins[]
 
     read_i2c_pin(addr, rj_out[i]); //pinMode(rj_out_J1[i], INPUT);
   }
+
+  Serial.print(" F:");
+  Serial.print(test_pass);
 
   Serial.println();
   return test_pass;
